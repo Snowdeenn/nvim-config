@@ -1,6 +1,5 @@
 return {
  "nvim-treesitter/nvim-treesitter",
-  branch = "main",
   event = { "BufReadPre", "BufNewFile" },
   build = ":TSUpdate",
   dependencies = {
@@ -10,7 +9,7 @@ return {
     local disable_markdown = vim.fn.has("nvim-0.12") == 1
 
     -- import nvim-treesitter plugin
-    local treesitter = require("nvim-treesitter.configs")
+    local treesitter = require("nvim-treesitter")
 
     -- nvim-treesitter ships a Haskell parser, but not separate parsers for
     -- literate Haskell or Cabal files.
@@ -25,9 +24,9 @@ return {
       -- Treesitter indent can override normal `o`/`O` newline indent behavior.
       indent = { enable = false },
       -- enable autotagging (w/ nvim-ts-autotag plugin)
-      autotag = {
-        enable = true,
-      },
+      -- autotag = {
+      --  enable = true,
+      --},
       -- ensure these language parsers are installed
       ensure_installed = {
         "json",

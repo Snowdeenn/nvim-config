@@ -1,5 +1,6 @@
 return {
 	"SalarAlo/rndr.nvim",
+	enable = false,
 	build = "make",
 	config = function()
 		require("rndr").setup({
