@@ -96,6 +96,8 @@ M.items = {
 	},
 	{
 		repo = "nyoom-engineering/oxocarbon.nvim",
+		build = false,
+  		rocks = false,
 		schemes = { "oxocarbon" },
 	},
 	{

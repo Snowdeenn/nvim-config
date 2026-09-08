@@ -1,5 +1,5 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
 		"clone",
@@ -18,6 +18,9 @@ require("lazy").setup({
 	change_detection = {
 		notify = false,
 	},
+	rocks = {
+    	enabled = false, -- Empêche Lazy d'utiliser LuaRocks sur TOUS les plugins
+  	},
 })
 
 require("salar.core.theme").setup()

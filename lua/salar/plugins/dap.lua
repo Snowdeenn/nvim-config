@@ -4,7 +4,7 @@ return {
 
     config = function()
         local dap = require("dap")
-        local uv = vim.uv or vim.loop
+        local uv = vim.uv
 
         local function file_exists(path)
             return path and uv.fs_stat(path) ~= nil

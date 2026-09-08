@@ -7,7 +7,6 @@ return {
 		{ "folke/neodev.nvim",                   opts = {} },
 	},
 	config = function()
-		local lspconfig = require("lspconfig")
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
 		local keymap = vim.keymap
 		local qt_clangd_flag_pattern = "^Unknown argument:%s*['\"]?%-mno%-direct%-extern%-access['\"]?"
@@ -31,7 +30,7 @@ return {
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 			callback = function(ev)
-				local opts = { buffer = ev.buf, silent = true }
+				local opts = { buf = ev.buf, silent = true }
 
 				local client = vim.lsp.get_client_by_id(ev.data.client_id)
 				if client and client.server_capabilities.semanticTokensProvider then
@@ -66,10 +65,14 @@ return {
 				keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts)
 
 				opts.desc = "Go to previous diagnostic"
-				keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
+				keymap.set("n", "[d", function()
+					vim.diagnostic.jump({ count = -1 })
+				end, opts)
 
 				opts.desc = "Go to next diagnostic"
-				keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
+				keymap.set("n", "]d", function()
+					vim.diagnostic.jump({ count = 1 })
+				end, opts)
 
 				opts.desc = "Show documentation under cursor"
 				keymap.set("n", "K", vim.lsp.buf.hover, opts)
@@ -98,11 +101,12 @@ return {
 		local capabilities = cmp_nvim_lsp.default_capabilities()
 
 		-- diagnostic signs
-		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
-		for type, icon in pairs(signs) do
-			local hl = "DiagnosticSign" .. type
-			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-		end
+		local signs = {
+			[vim.diagnostic.severity.ERROR] = " ",
+			[vim.diagnostic.severity.WARN] = " ",
+			[vim.diagnostic.severity.HINT] = "󰠠 ",
+			[vim.diagnostic.severity.INFO] = " ",
+		}
 
 		-- inline diagnostics (virtual text)
 		vim.diagnostic.config({
@@ -110,7 +114,7 @@ return {
 				prefix = "●",
 				spacing = 2,
 			},
-			signs = true,
+			signs = { text = signs },
 			underline = true,
 			update_in_insert = false,
 			severity_sort = true,
@@ -119,9 +123,6 @@ return {
 		-- ============================
 		-- Language servers
 		-- ============================
-
-		-- TypeScript / TSX
-		local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 		-- ============================
 		-- TypeScript / TSX (NEW API)
@@ -184,6 +185,7 @@ return {
 
 			-- auto-format on save
 			vim.api.nvim_create_autocmd("BufWritePre", {
+				group = vim.api.nvim_create_augroup("UserLspFormat", { clear = true }),
 				callback = function(ev)
 					local ft = vim.bo[ev.buf].filetype
 					local cpp_like = vim.tbl_contains({ "c", "cpp", "objc", "objcpp" }, ft)

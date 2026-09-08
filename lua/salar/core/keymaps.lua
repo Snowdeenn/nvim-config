@@ -1,4 +1,4 @@
-vim.g.mapleader = " "
+ vim.g.mapleader = " "
 
 local keymap = vim.keymap
 
@@ -35,3 +35,7 @@ vim.keymap.set("n", "<leader>cu", "<cmd>Telescope lsp_references<CR>")
 keymap.set("n", "<leader>ts", "<cmd>Theme<CR>", { desc = "Select theme" })
 keymap.set("n", "<leader>tn", "<cmd>ThemeNext<CR>", { desc = "Next theme" })
 keymap.set("n", "<leader>tp", "<cmd>ThemePrev<CR>", { desc = "Previous theme" })
+
+vim.keymap.set("n", "<leader>fm", function()
+  vim.lsp.buf.format({ async = true })
+end)

@@ -5,7 +5,7 @@ local function godot_root_for(path)
 	local match = vim.fs.find("project.godot", {
 		path = resolved,
 		upward = true,
-		stop = vim.loop.os_homedir(),
+		stop = vim.uv.os_homedir(),
 	})[1]
 
 	if not match then
