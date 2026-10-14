@@ -104,6 +104,13 @@ M.items = {
 		repo = "RRethy/base16-nvim",
 		schemes = { "base16-default-dark", "base16-default-light" },
 	},
+	{
+    	repo = "code-2026-theme/nvim",
+		name = "code-2026",
+		lazy = false,
+		priority = 1000,
+		schemes = { "dark-2026", "light-2026" },
+	},
 }
 
 function M.names()
