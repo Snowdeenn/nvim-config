@@ -32,10 +32,10 @@ return {
 			callback = function(ev)
 				local opts = { buf = ev.buf, silent = true }
 
-				local client = vim.lsp.get_client_by_id(ev.data.client_id)
-				if client and client.server_capabilities.semanticTokensProvider then
-					client.server_capabilities.semanticTokensProvider = nil
-				end
+				-- local client = vim.lsp.get_client_by_id(ev.data.client_id)
+				-- if client and client.server_capabilities.semanticTokensProvider then
+				-- 	client.server_capabilities.semanticTokensProvider = nil
+				-- end
 
 				opts.desc = "Show LSP references"
 				keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
